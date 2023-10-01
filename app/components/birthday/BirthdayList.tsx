@@ -19,12 +19,10 @@ export const BirthdayList = (): JSX.Element => {
   const { day, month } = useContext(DateSelectorContext);
   const { data, isLoading, error } = useOnThisDay(triggerFetch, OnThisDayTypes.Birthday, day, month);
 
-  console.log('month - day', month, day);
-
   // create birthday classes and sorted by descending birth year
   useEffect(() => {
     if (!data) return;
-    console.log('data', data.births)
+    console.log('data', data.b)
     const birthdays = data.births
       .map((birthday: any) => new Birthday(birthday))
       .sort((a: Birthday, b: Birthday) => b.birthYear - a.birthYear);
@@ -94,7 +92,7 @@ export const BirthdayList = (): JSX.Element => {
             value={searchTerm}
             onSubmit={searchBirthdays}
             onChange={searchBirthdays} />
-          <div className="max-w-[1600px] w-[1250px] p-6 border-2 m-5 rounded max-h-[600px] overflow-y-auto">
+          <div className="flex w-[70%] p-2 border-2 m-5 rounded max-h-[600px] overflow-y-auto">
             {isLoading ? <Loader content="Loading Birthdays..." /> : <BirthdayPersons birthdays={birthdays} />}
           </div>
         </>

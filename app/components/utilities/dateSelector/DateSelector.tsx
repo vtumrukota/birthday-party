@@ -22,15 +22,10 @@ export const DateSelector = ({ isDisabled }: {isDisabled?: boolean }): JSX.Eleme
   };
 
   return (
-    <div className="flex flex-row items-center justify-center mt-5 p-5 rounded border-2 border-green-900">
+    <div className="flex flex-row items-center justify-center mt-5 p-5">
       <DatePicker
-        label="Change Date"
+        label="Change Birthday"
         disabled={isDisabled}
-        slotProps={{
-          textField: { 
-            helperText : 'For leap years use Feb. 29, 2020' }
-          }
-        }
         openTo={DateViews.Month}
         views={[DateViews.Month, DateViews.Day]}
         onAccept={setNewDate}
