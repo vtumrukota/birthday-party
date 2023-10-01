@@ -9,7 +9,7 @@ enum DateViews {
   Year = 'year'
 }
 
-export const DateSelector = (): JSX.Element => {
+export const DateSelector = ({ isDisabled }: {isDisabled?: boolean }): JSX.Element => {
   const { day, month, setDay, setMonth } = useContext(DateSelectorContext);
 
   const setNewDate = (value: Date | null) => {
@@ -22,10 +22,10 @@ export const DateSelector = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-row items-center justify-center mt-5 p-5 rounded border-2 bg-white">
-      <h1 className="mr-5 pb-6 font-bold">Select A Birthday:</h1>
+    <div className="flex flex-row items-center justify-center mt-5 p-5 rounded border-2 border-green-900">
       <DatePicker
-        label="Month & Day"
+        label="Change Date"
+        disabled={isDisabled}
         slotProps={{
           textField: { 
             helperText : 'For leap years use Feb. 29, 2020' }

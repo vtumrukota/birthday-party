@@ -18,6 +18,13 @@ const wikiFetcher = async (url: string) => {
       'Api-User-Agent': wikiUserAgent,
     },
   });
+
+  if (!resp.ok) {
+    const error = new Error('An error occurred while fetching the data.')
+    error.message = await resp.json()
+    throw error
+  }
+
   return await resp.json();
 }
 
@@ -50,8 +57,9 @@ export enum OnThisDayTypes {
 
 // TODO: Add guards for Date/Month range strings
 export const useOnThisDay = (
+  triggerFetch: boolean,
   type: OnThisDayTypes = OnThisDayTypes.Birthday,
   day: string,
   month: string
 ): SWRResponse =>
-  useSWR(`${WIKI_API}/onthisday/${type}/${month}/${day}`, wikiFetcher)
+  useSWR(triggerFetch ? `${WIKI_API}/onthisday/${type}/${month}/${day}` : null, wikiFetcher)
