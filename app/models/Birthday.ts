@@ -16,10 +16,10 @@ export class Birthday {
     // The second page is always about the date/year itself
     const person = data.text.split(', ');
     this.birthYear = data.year;
-    const about = person[1].split('(d. ');
-    this.description = about[0];
-    this.deathYear = about.length > 1 ? about[1].replace(')', '') : null;
+    const about = person[1]?.split('(d. ');
+    this.deathYear = about?.length > 1 ? about[1].replace(')', '') : null;
     const info = data.pages[0];
+    this.description = info.description;
     this.name = info.normalizedtitle;
     this.additionalDetails = info.extract;
     this.thumbnail = info.thumbnail?.source;

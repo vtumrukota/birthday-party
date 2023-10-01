@@ -7,15 +7,14 @@ import { Birthday } from "../../models/Birthday"
 import { BirthdayPersons } from "./BirthdayPersons"
 
 export const BirthdayList = (): JSX.Element => {
-  const dateCtx = useContext(DateSelectorContext);
-  console.log('dateCtx', dateCtx)
+  const { day, month } = useContext(DateSelectorContext);
   const original = useRef<Birthday[]>([]); // used by search to filter results
   const [birthdays, setBirthdays] = useState<Birthday[]>([]);
-  const { data, isLoading, error } = useOnThisDay(OnThisDayTypes.Birthday, '01', '02');
+  const { data, isLoading, error } = useOnThisDay(OnThisDayTypes.Birthday, day || '11',  month || '11');
 
+  // create birthday classes and sorted by descending birth year
   useEffect(() => {
-    if (!data || isLoading) return;
-    // create birthday classes and sorted by descending birth year
+    if (!data) return;
     console.log('data', data.births)
     const birthdays = data.births
       .map((birthday: any) => new Birthday(birthday))
@@ -23,15 +22,14 @@ export const BirthdayList = (): JSX.Element => {
     console.log('birthdays', birthdays);
     original.current = birthdays;
     setBirthdays(birthdays);
-  }, [data, isLoading])
-  
+  }, [data])
 
   return (
     <>
       <DateSelector />
       {/* TODO: implement search by name or year */}
       {/* <SearchInput /> */}
-      <div className="grid grid-cols-4 gap-6 min-w-[50%] p-6 border-2 border-green-800 m-5 rounded max-h-[50rem] overflow-y-auto">
+      <div className="grid grid-cols-4 gap-6 min-w-[1200px] p-6 border-2 border-green-800 m-5 rounded max-h-[50rem] min-h-[600px] overflow-y-auto">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center">
             <h1>Loading...</h1>

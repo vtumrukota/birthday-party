@@ -14,10 +14,12 @@
     "@mui/material": "^5.14.11",
     "@mui/x-date-pickers": "^6.16.0",
     "@testing-library/react": "^14.0.0",
+    "@types/react-virtualized": "^9.21.23",
     "dayjs": "^1.11.10",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-virtualized": "^9.22.5",
     "swr": "^2.2.4"
   },
   "devDependencies": {

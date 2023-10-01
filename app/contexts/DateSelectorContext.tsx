@@ -1,12 +1,18 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 type DateSelectorContextType = {
   day: string | null,
   month: string | null,
+  setDay: (day: string) => void,
+  setMonth: (month: string) => void,
 }
 
-export const DateSelectorContext = createContext<DateSelectorContextType>({ day: null, month: null });
-
-export const useDateSelectorContext = () => {
-  return useContext(DateSelectorContext)
-}
+/**
+ * Context for the date selector component
+ */
+export const DateSelectorContext = createContext<DateSelectorContextType>({
+  day: null,
+  month: null,
+  setDay: () => {},
+  setMonth: () => {}
+});
