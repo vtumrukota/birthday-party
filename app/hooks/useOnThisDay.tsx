@@ -1,5 +1,4 @@
 import useSWR, { SWRResponse } from 'swr'
-import { OnThisDayTypes } from '../app.definitions'
 
 /**
   Securely grab the auth token from the environment variable in Vercel
@@ -11,17 +10,31 @@ const wikiBearerToken = `Bearer ${process.env.WIKI_ACCESS_TOKEN}`
 const wikiUserAgent = `${process.env.WIKI_USER_AGENT}`
 
 // Ensure we pass required headers to the API
-const wikiFetcher = (url: string) =>
-  fetch(url, {
+const wikiFetcher = async (url: string) => {
+  const resp = await fetch(url, {
     method: 'GET',
     headers: {
       'Authorization': wikiBearerToken,
       'Api-User-Agent': wikiUserAgent,
     },
-  }).then((response) => response.json());
+  });
+  return await resp.json();
+}
 
 // We will only support english users for v1, hence the /en path
 const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia/en'
+
+/**
+ * Options for the OnThisDay API
+ */
+export enum OnThisDayTypes {
+  All = 'all',
+  Selected = 'selected',
+  Birthday = 'births',
+  Deaths = 'deaths',
+  Holidays = 'holidays',
+  Events = 'events',
+}
 
 /**
  * This hook fetches notable events or persons that were born or died on a given date.
@@ -40,6 +53,5 @@ export const useOnThisDay = (
   type: OnThisDayTypes = OnThisDayTypes.Birthday,
   day: string,
   month: string
-): SWRResponse => {
-  return useSWR(`${WIKI_API}/${type}/${month}/${day}`, wikiFetcher)
-}
+): SWRResponse =>
+  useSWR(`${WIKI_API}/onthisday/${type}/${month}/${day}`, wikiFetcher)
