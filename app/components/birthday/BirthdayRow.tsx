@@ -3,9 +3,9 @@ import CardContent from "@mui/material/CardContent"
 import { Avatar } from "@mui/material"
 import { Birthday } from "../../models/Birthday"
 
-export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element =>
+export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element => (
   <div className="group mt-5 relative">
-    <Card className="border-2 border-stone-500">
+    <Card className="border-2 border-green-800 h-36">
       <CardContent className="flex flex-col">
         <div className="flex flex-row items-center"> 
           <Avatar src={birthday.thumbnail} alt={birthday.name} className="flex-row"/>
@@ -17,11 +17,12 @@ export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element =
           {birthday.deathYear && <span> - 🪦 {birthday.deathYear}</span>}
         </p>
       </CardContent>
-    </Card>
-    {/* show more details about the person on hover */}
-    <Card className="hidden absolute top-0 left-0 right-0 bottom-0 bg-white transition duration-300 group-hover:block">
-      <CardContent className="flex flex-col items-center text-sm max-h-32 overflow-y-auto italic">
-        {birthday.additionalDetails}
-      </CardContent>
+      {/* show more details about the person on hover */}
+      <Card className="hidden absolute top-0 left-0 right-0 bottom-0 bg-white transition duration-300 bg-slate-200 group-hover:block">
+        <CardContent className="flex flex-col items-center text-sm max-h-36 overflow-y-auto italic">
+          {birthday.additionalDetails}
+        </CardContent>
+      </Card>
     </Card>
   </div>
+);
