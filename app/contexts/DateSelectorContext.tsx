@@ -5,7 +5,7 @@ type DateSelectorContextType = {
   month: string | null,
 }
 
-const DateSelectorContext = createContext<DateSelectorContextType>({ day: null, month: null });
+export const DateSelectorContext = createContext<DateSelectorContextType>({ day: null, month: null });
 
 export const useDateSelectorContext = () => {
   return useContext(DateSelectorContext)
