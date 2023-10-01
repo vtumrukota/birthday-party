@@ -92,7 +92,7 @@ export const BirthdayList = (): JSX.Element => {
             value={searchTerm}
             onSubmit={searchBirthdays}
             onChange={searchBirthdays} />
-          <div className="flex w-[70%] p-2 border-2 m-5 rounded max-h-[600px] overflow-y-auto">
+          <div className="flex w-[70%] p-2 border-2 m-5 rounded overflow-y-auto">
             {isLoading ? <Loader content="Loading Birthdays..." /> : <BirthdayPersons birthdays={birthdays} />}
           </div>
         </>
