@@ -6,14 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --watch"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.11",
     "@mui/x-date-pickers": "^6.16.0",
-    "@testing-library/react": "^14.0.0",
     "@types/lodash-es": "^4.17.9",
     "dayjs": "^1.11.10",
     "lodash-es": "^4.17.21",
@@ -23,12 +23,17 @@
     "swr": "^2.2.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.3",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.5.5",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "latest",
     "tailwindcss": "latest",
     "typescript": "latest"

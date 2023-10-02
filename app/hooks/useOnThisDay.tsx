@@ -33,6 +33,8 @@ const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia/en'
 
 /**
  * Options for the OnThisDay API
+ * 
+ * Allow for future types to be added in v2
  */
 export enum OnThisDayTypes {
   All = 'all',
@@ -57,9 +59,18 @@ export enum OnThisDayTypes {
 
 // TODO: Add guards for Date/Month range strings
 export const useOnThisDay = (
-  triggerFetch: boolean,
-  type: OnThisDayTypes = OnThisDayTypes.Birthday,
   day: string,
-  month: string
-): SWRResponse =>
-  useSWR(triggerFetch ? `${WIKI_API}/onthisday/${type}/${month}/${day}` : null, wikiFetcher)
+  month: string,
+  type: OnThisDayTypes = OnThisDayTypes.Birthday,
+  triggerFetch: boolean = true,
+  ): SWRResponse => {
+    const { data,  error, mutate, isLoading, isValidating } = useSWR(triggerFetch ? `${WIKI_API}/onthisday/${type}/${month}/${day}` : null, wikiFetcher)
+
+    return {
+      data,
+      error,
+      mutate,
+      isLoading,
+      isValidating,
+    }
+  }

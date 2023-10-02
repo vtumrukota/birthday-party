@@ -19,7 +19,7 @@ export class Birthday {
     const about = person[1]?.split('(d. ');
     this.deathYear = about?.length > 1 ? about[1].replace(')', '') : null;
     const info = data.pages[0];
-    this.description = info.description;
+    this.description = info.description; // TODO: parse out dates if has (---)
     this.name = info.normalizedtitle;
     this.additionalDetails = info.extract;
     this.thumbnail = info.thumbnail?.source;

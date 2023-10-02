@@ -1,43 +1,18 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useRef, useState } from "react"
 import debounce from "lodash-es/debounce"
-import { Button, Stack, TextField } from "@mui/material"
-import { useOnThisDay, OnThisDayTypes } from "@/app/hooks/useOnThisDay"
-import { DateSelectorContext } from "@/app/contexts/DateSelectorContext"
 import { Birthday } from "../../models/Birthday"
-import { BirthdayPersons } from "./BirthdayPersons"
 import { DEBOUNCE_DEFAULT } from "../globals.constants"
-import { BirthdayError } from "../utilities/errors/BirthdayError"
-import { DateSelector } from "../utilities/dateSelector/DateSelector"
 import { Loader } from "../utilities/loader/Loader"
+import { BirthdaysContext } from "@/app/contexts/BirthdaysContext"
+import { BirthdayRow } from "./BirthdayRow"
 
 export const BirthdayList = (): JSX.Element => {
-  const hasLoaded = useRef<boolean>(false);
-  const originalList = useRef<Birthday[]>([]); // used by search to filter results
-  const [birthdays, setBirthdays] = useState<Birthday[]>([]);
+  const { birthdays, setBirthdays, isLoading } = useContext(BirthdaysContext);
+  const originalList = useRef<Birthday[]>(birthdays); // used by search to filter results
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [triggerFetch, setTriggerFetch] = useState<boolean>(false);
-  const { day, month } = useContext(DateSelectorContext);
-  const { data, isLoading, error } = useOnThisDay(triggerFetch, OnThisDayTypes.Birthday, day, month);
-
-  // create birthday classes and sorted by descending birth year
-  useEffect(() => {
-    if (!data) return;
-    console.log('data', data.b)
-    const birthdays = data.births
-      .map((birthday: any) => new Birthday(birthday))
-      .sort((a: Birthday, b: Birthday) => b.birthYear - a.birthYear);
-    originalList.current = birthdays;
-    setBirthdays(birthdays);
-    setTriggerFetch(false) // reset trigger to allow re-fetch on button click
-  }, [data])
-
-  const fetchBirthdays = () => {
-    if (!hasLoaded.current) hasLoaded.current = true;
-    setTriggerFetch(true);
-  }
 
   const handleSearch = useCallback(() => {
-    if (!searchTerm) {
+    if (searchTerm === '') {
       setBirthdays(originalList.current);
       return
     }
@@ -49,10 +24,10 @@ export const BirthdayList = (): JSX.Element => {
       return name.includes(lwrcsTerm) || birthYear.includes(lwrcsTerm) || description?.includes(lwrcsTerm);
     });
     setBirthdays(filtered);
-  }, [searchTerm]);
+  }, [searchTerm, setBirthdays]);
 
   // Ensure the search is debounced to avoid looping through items on every keystroke
-  const totalCount = birthdays.length;
+  const totalCount = originalList.current.length;
   const debouncedSearch = debounce(handleSearch, DEBOUNCE_DEFAULT);
   
   const searchBirthdays = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,42 +36,23 @@ export const BirthdayList = (): JSX.Element => {
     debouncedSearch();
   }
 
-  // If data fetch fails, throw modal and ask user to restart the app
-  if (error) return <BirthdayError />
-
   return (
-    <>
-      <div className="flex flex-row items-center justify-center">
-        <Stack direction="row" spacing={2}>
-          <div className="flex flex-row items-center justify-center">
-            <Button
-              disabled={isLoading}
-              className="!bg-red-600 hover:!bg-lime-950"
-              variant="contained"
-              onClick={fetchBirthdays}>
-              {`View Birthdays on ${month}/${day}`}
-            </Button>
-          </div>
-          {hasLoaded.current && <DateSelector isDisabled={isLoading} />}
-        </Stack>
-      </div>
-
-      {/* Only render the list if the user has clicked the button */}
-      {hasLoaded.current && (
+    <div className="flex w-[70%] p-2 border-2 m-5 rounded items-center justify-center bg-slate-200 overflow-y-auto">
+      {isLoading ? <Loader content="Loading Birthdays..." /> : (
         <>
-          <TextField
-            id="search-birthdays"
-            className="w-[400px] mt-5 ml-5 bg-white"
-            helperText="Search by name, year of birth, or description"
-            label={`Search through ${totalCount} results below`}
-            value={searchTerm}
-            onSubmit={searchBirthdays}
-            onChange={searchBirthdays} />
-          <div className="flex w-[70%] p-2 border-2 m-5 rounded overflow-y-auto">
-            {isLoading ? <Loader content="Loading Birthdays..." /> : <BirthdayPersons birthdays={birthdays} />}
-          </div>
+          {birthdays.length > 0 ? (
+            // use virtualized grid to render the list of birthday cards since this API is not paginated
+            // NOTE: we are assuming the list is never more than a thousand items (<= 600 max)
+            <div className="grid grid-cols-3 items-center gap-4 pl-2 pr-2">
+              {birthdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
+            </div>
+          ) : (
+            // This will appear if the filter returns no results
+            // Technically, if the page doesnt have birthdays this will appear as well but that should never occur
+            <h1 className="text-3xl">Sorry, no Birthdays matched 😔</h1>
+          )}
         </>
       )}
-    </>
+    </div>
   )
 }
