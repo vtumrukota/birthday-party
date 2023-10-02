@@ -9,10 +9,10 @@ export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element =
       <CardContent className="flex flex-col">
         <div className="flex flex-row items-center">
           <Avatar src={birthday.thumbnail} alt={birthday.name} className="flex-row"/>
-          <h3 className="text-xl ml-2 line-clamp-2">{birthday.name}</h3>
+          <h3 className="text-lg ml-2 line-clamp-2">{birthday.name}</h3>
         </div>
-        <p className="text-lg pt-2 italic line-clamp-2">{birthday.description}</p>
-        <p className="text-md pt-2 font-bold">
+        <p className="text-sm pt-2 italic line-clamp-2">{birthday.description}</p>
+        <p className="text-lg pt-2 font-bold">
           <span>👼 {birthday.birthYear}</span>
           {birthday.deathYear && <span> - 🪦 {birthday.deathYear}</span>}
         </p>

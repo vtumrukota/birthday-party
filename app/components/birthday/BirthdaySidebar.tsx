@@ -1,11 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
-import { OnThisDayTypes, useOnThisDay } from "@/app/hooks/useOnThisDay";
+import {  useOnThisDay } from "@/app/hooks/useOnThisDay";
 import { DateSelectorContext } from "@/app/contexts/DateSelectorContext";
 import { Birthday } from "@/app/models/Birthday";
 import { BirthdaysContext } from "@/app/contexts/BirthdaysContext";
 import { DateSelector } from "../utilities/dateSelector/DateSelector";
 import { BirthdayError } from "../utilities/errors/BirthdayError";
+import { OnThisDayTypes } from '../../hooks/hooks.definitions';
 
 export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
   hasFetched: boolean,

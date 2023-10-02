@@ -1,7 +1,7 @@
-import { use, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import debounce from "lodash-es/debounce"
 import includes from "lodash-es/includes"
-import { Pagination, TextField } from "@mui/material"
+import { Pagination } from "@mui/material"
 import { Birthday } from "../../models/Birthday"
 import { BIRTHDAY_PAGE_SIZE, DEBOUNCE_DEFAULT } from "../globals.constants"
 import { Loader } from "../utilities/loader/Loader"
@@ -13,6 +13,7 @@ export const BirthdayList = (): JSX.Element => {
   const originalList = useRef<Birthday[]>(birthdays); // used by search to filter results
   const [displayedBdays, setDisplayedBdays] = useState<Birthday[]>(birthdays);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<string>('desc'); // desc by default in the Sidebar
 
   useEffect(() => {
     originalList.current = birthdays;
@@ -64,6 +65,13 @@ export const BirthdayList = (): JSX.Element => {
       {isLoading ? <Loader content="Loading Birthdays..." /> : (
         <div className="flex flex-col h-full">
           <div className="flex flex-row justify-end items-center w-full mb-4">
+            {/* TODO add sort */}
+            {/* <Button
+              className="!bg-red-600 hover:!bg-slate-900 mr-4"
+              variant="contained"
+              onClick={() => sortBirthdays(sortOrder === 'asc' ? 'desc' : 'asc')}>
+              Sort {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+            </Button> */}
             <Pagination
               count={Math.floor(originalList.current.length / BIRTHDAY_PAGE_SIZE)}
               onChange={handlePage}
@@ -79,7 +87,7 @@ export const BirthdayList = (): JSX.Element => {
           </div>
           {/* Show cards or let user know their search had no matches (data will always return some people) */}
           {displayedBdays.length > 0 ? (
-            <div className="grid grid-cols-4 items-center gap-8 pl-4 pr-4 overflow-y-auto">
+            <div className="grid grid-cols-3 items-center gap-8 pl-4 pr-4 pb-4 overflow-y-auto">
               {displayedBdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
             </div>
           ) : <h1 className="text-3xl">Sorry, no Birthdays matched 😔</h1>}

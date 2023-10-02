@@ -1,5 +1,5 @@
-// https://swr.vercel.app/docs/api
-import useSWR, { SWRResponse } from 'swr'
+import useSWR, { SWRResponse } from 'swr' // https://swr.vercel.app/docs/api
+import { OnThisDayTypes } from './hooks.definitions';
 
 /**
   Securely grab the auth token from the environment variable in Vercel
@@ -33,20 +33,6 @@ const wikiFetcher = async (url: string) => {
 const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia/en'
 
 /**
- * Options for the OnThisDay API
- * 
- * Allow for future types to be added in v2
- */
-export enum OnThisDayTypes {
-  All = 'all',
-  Selected = 'selected',
-  Birthday = 'births',
-  Deaths = 'deaths',
-  Holidays = 'holidays',
-  Events = 'events',
-}
-
-/**
  * This hook fetches notable events or persons that were born or died on a given date.
  * For v1, we will default type for birthdays
  * 
@@ -75,3 +61,11 @@ export const useOnThisDay = (
       isValidating,
     }
   }
+
+export {
+  OnThisDayTypes /**
+  Securely grab the auth token from the environment variable in Vercel
+  
+  In a true production app, we should technically be hitting an internal API so we
+  never expose the key to the client as headers can be sniffed
+ */ };
