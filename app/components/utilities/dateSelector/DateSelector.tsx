@@ -22,7 +22,7 @@ export const DateSelector = ({ isDisabled }: {isDisabled?: boolean }): JSX.Eleme
   };
 
   return (
-    <div className="flex flex-row items-center justify-center mt-5 p-5">
+    <div className="flex flex-row items-center justify-center mt-5 p-5 bg-white rounded">
       <DatePicker
         label="Change Birthday"
         disabled={isDisabled}

@@ -38,12 +38,12 @@ export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
   if (error) return <BirthdayError />
 
   return (
-    <section className="flex flex-col h-screen min-w-[320px] items-center justify-center bg-slate-200">
+    <section className="flex flex-col h-screen min-w-[320px] items-center justify-center bg-zinc-600 text-white">
       <h1 className="text-3xl font-bold">🎈 Birthday Party 🎈</h1>
       <h5 className="m-5 italic text-sm">Who elses shares your Birthday?</h5>
       <Button
         disabled={isLoading}
-        className="!bg-red-600 hover:!bg-lime-950"
+        className="!bg-red-600 hover:!bg-slate-900"
         variant="contained"
         onClick={fetchBirthdays}>
         {`See Birthdays on ${month}/${day}`}

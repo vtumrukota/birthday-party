@@ -43,7 +43,7 @@ export const BirthdayList = (): JSX.Element => {
           {birthdays.length > 0 ? (
             // use virtualized grid to render the list of birthday cards since this API is not paginated
             // NOTE: we are assuming the list is never more than a thousand items (<= 600 max)
-            <div className="grid grid-cols-3 h-full items-center gap-4 pl-2 pr-2">
+            <div className="grid grid-cols-3 h-full items-center gap-8 pl-2 pr-2">
               {birthdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
             </div>
           ) : (

@@ -18,7 +18,7 @@ export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element =
         </p>
       </CardContent>
       {/* show more details about the person on hover - use pure CSS to keep this performant */}
-      <Card className="hidden absolute top-0 left-0 right-0 bottom-0 transition duration-300 group-hover:block group-hover:!bg-red-200">
+      <Card className="hidden absolute top-0 left-0 right-0 bottom-0 transition duration-300 group-hover:block group-hover:!bg-amber-100">
         <CardContent className="flex flex-col items-center text-sm max-h-36 overflow-y-auto italic">
           {birthday.additionalDetails}
         </CardContent>
