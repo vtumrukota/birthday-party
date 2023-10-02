@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import dayjs from 'dayjs';
-import { DatePicker, DateValidationError, PickerChangeHandlerContext } from "@mui/x-date-pickers"
+import { DatePicker } from "@mui/x-date-pickers"
 import { DateSelectorContext } from "@/app/contexts/DateSelectorContext"
 
 enum DateViews {
@@ -10,19 +10,19 @@ enum DateViews {
 }
 
 export const DateSelector = ({ isDisabled }: {isDisabled?: boolean }): JSX.Element => {
-  const { day, month, setDay, setMonth } = useContext(DateSelectorContext);
+  const { setDay, setMonth } = useContext(DateSelectorContext);
 
   const setNewDate = (value: Date | null) => {
     if (!value) return;
     const dayMonth = dayjs(value);
     const newDay = `${dayMonth.get('date')}`;
     const newMonth = `${dayMonth.get('month') + 1}`;
-    if (day !== newDay) setDay(newDay);
-    if (month !== newMonth) setMonth(newMonth);
+    setDay(newDay);
+    setMonth(newMonth);
   };
 
   return (
-    <div className="flex flex-row items-center justify-center mt-5 p-5 bg-white rounded">
+    <div className="flex flex-row items-center justify-center mt-4 p-2 bg-white rounded">
       <DatePicker
         label="Change Birthday"
         disabled={isDisabled}

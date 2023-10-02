@@ -1,56 +1,89 @@
-import { useCallback, useContext, useRef, useState } from "react"
+import { use, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import debounce from "lodash-es/debounce"
+import includes from "lodash-es/includes"
+import { Pagination, TextField } from "@mui/material"
 import { Birthday } from "../../models/Birthday"
-import { DEBOUNCE_DEFAULT } from "../globals.constants"
+import { BIRTHDAY_PAGE_SIZE, DEBOUNCE_DEFAULT } from "../globals.constants"
 import { Loader } from "../utilities/loader/Loader"
 import { BirthdaysContext } from "@/app/contexts/BirthdaysContext"
 import { BirthdayRow } from "./BirthdayRow"
 
 export const BirthdayList = (): JSX.Element => {
-  const { birthdays, setBirthdays, isLoading } = useContext(BirthdaysContext);
+  const { birthdays, isLoading } = useContext(BirthdaysContext);
   const originalList = useRef<Birthday[]>(birthdays); // used by search to filter results
+  const [displayedBdays, setDisplayedBdays] = useState<Birthday[]>(birthdays);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const handleSearch = useCallback(() => {
-    if (searchTerm === '') {
-      setBirthdays(originalList.current);
-      return
-    }
-    const lwrcsTerm = searchTerm.toLowerCase();
+  useEffect(() => {
+    originalList.current = birthdays;
+    updatePage(1);
+  }, [birthdays]);
+
+  const handleSearch = (term: string) => {
+    console.log('fired handle search', term);
+    if (term === '') {
+      updatePage(1);
+      return;
+    };
+    const lwrcsTerm = term.trim().toLowerCase();
     const filtered: Birthday[] = originalList.current.filter((birthday: Birthday) => {
       const name = birthday.name.toLowerCase();
       const birthYear = birthday.birthYear.toString();
       const description = birthday.description?.toLowerCase();
-      return name.includes(lwrcsTerm) || birthYear.includes(lwrcsTerm) || description?.includes(lwrcsTerm);
+      return includes(name, lwrcsTerm) || includes(birthYear, lwrcsTerm) || includes(description, lwrcsTerm);
     });
-    setBirthdays(filtered);
-  }, [searchTerm, setBirthdays]);
+    setDisplayedBdays(filtered);
+  };
 
   // Ensure the search is debounced to avoid looping through items on every keystroke
+  const debouncedSearch = debounce((search: string) => {
+    handleSearch(search);
+  },
+    DEBOUNCE_DEFAULT,
+    { leading: false, trailing: true }
+  );
   const totalCount = originalList.current.length;
-  const debouncedSearch = debounce(handleSearch, DEBOUNCE_DEFAULT);
+  // const searchLabel = totalCount === displayedBdays.length ? `Search ${totalCount} Birthdays` : `Showing ${displayedBdays.length} / ${totalCount}`;
   
   const searchBirthdays = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVal = e.target.value;
     setSearchTerm(newVal);
-    debouncedSearch();
+    debouncedSearch(newVal)
+  };
+
+  const updatePage = (page: number) => {
+    const start = page * BIRTHDAY_PAGE_SIZE;
+    const end = start + BIRTHDAY_PAGE_SIZE;
+    setDisplayedBdays(originalList.current.slice(start, end));
   }
+  const handlePage = (_e: React.ChangeEvent<unknown> , page: number) => updatePage(page);
 
   return (
-    <div className="flex flex-col h-screen w-screen items-center justify-center p-5 overflow-y-auto">
+    <div className="flex flex-col h-screen w-screen items-center justify-center p-2">
+      {/* Show loading state */}
       {isLoading ? <Loader content="Loading Birthdays..." /> : (
-        <>
-          {birthdays.length > 0 ? (
-            // use virtualized grid to render the list of birthday cards since this API is not paginated
-            // NOTE: we are assuming the list is never more than a thousand items (<= 600 max)
-            <div className="grid grid-cols-3 h-full items-center gap-8 pl-2 pr-2">
-              {birthdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
+        <div className="flex flex-col h-full">
+          <div className="flex flex-row justify-end items-center w-full mb-4">
+            <Pagination
+              count={Math.floor(originalList.current.length / BIRTHDAY_PAGE_SIZE)}
+              onChange={handlePage}
+              />
+              {/* TODO: Fix debounce on search */}
+            {/* <TextField
+              className="w-[300px] bg-white mr-4"
+              label={`Filter ${totalCount} Birthdays`}
+              variant="outlined"
+              value={searchTerm}
+              onChange={searchBirthdays}
+            /> */}
+          </div>
+          {/* Show cards or let user know their search had no matches (data will always return some people) */}
+          {displayedBdays.length > 0 ? (
+            <div className="grid grid-cols-4 items-center gap-8 pl-4 pr-4 overflow-y-auto">
+              {displayedBdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
             </div>
-          ) : (
-            // If no birthdays exist, check if we've fetched data before showing this message
-            <h1 className="text-3xl">Sorry, no Birthdays matched 😔</h1>
-          )}
-        </>
+          ) : <h1 className="text-3xl">Sorry, no Birthdays matched 😔</h1>}
+        </div>
       )}
     </div>
   )

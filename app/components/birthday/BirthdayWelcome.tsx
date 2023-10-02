@@ -5,6 +5,7 @@ export const BirthdayWelcome = (): JSX.Element =>
     <h1 className="text-4xl font-bold">Welcome to Birthday Party!</h1>
     <p className="text-lg pt-4">Please select a day & month to see who was born on that day.</p>
     <Image
+      priority
       className="rounded-lg"
       src="/images/bday-party.png"
       alt="birthday-party"
