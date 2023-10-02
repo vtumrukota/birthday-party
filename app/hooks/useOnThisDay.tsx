@@ -21,16 +21,16 @@ const wikiFetcher = async (url: string) => {
   });
 
   if (!resp.ok) {
-    const error = new Error('An error occurred while fetching the data.')
-    error.message = await resp.json()
-    throw error
+    const error = new Error('An error occurred while fetching the data.');
+    error.message = await resp.json();
+    throw error;
   }
 
   return await resp.json();
 }
 
 // We will only support english users for v1, hence the /en path
-const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia/en'
+const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia/en';
 
 /**
  * This hook fetches notable events or persons that were born or died on a given date.
@@ -59,13 +59,5 @@ export const useOnThisDay = (
       mutate,
       isLoading,
       isValidating,
-    }
-  }
-
-export {
-  OnThisDayTypes /**
-  Securely grab the auth token from the environment variable in Vercel
-  
-  In a true production app, we should technically be hitting an internal API so we
-  never expose the key to the client as headers can be sniffed
- */ };
+    };
+};

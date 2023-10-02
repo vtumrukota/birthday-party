@@ -15,15 +15,20 @@ import { Button } from "@mui/material";
  * @param acceptText?: string - The text for the accept button
  * @returns 
  */
-export const Modal = ({ open, title, content, closeText = 'Close', acceptText }: {
+export const Modal = ({ open, title, content, closeText = 'Close', closeAction, acceptText }: {
   open: boolean,
   title: string,
-  content: string | JSX.Element
-  closeText: string
-  acceptText?: string
+  content: string | JSX.Element,
+  closeText: string,
+  closeAction?: () => void,
+  acceptText?: string,
 }): JSX.Element => {
-  const [isOpen, setIsOpen] = useState<boolean>(open)
-  const handleClose = () => setIsOpen(false)
+  const [isOpen, setIsOpen] = useState<boolean>(open);
+  
+  const handleClose = () => {
+    setIsOpen(false);
+    closeAction?.();
+  };
 
   return (
     <Dialog
