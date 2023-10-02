@@ -5,7 +5,7 @@ import { Birthday } from "../../models/Birthday"
 
 export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element => (
   <div className="group relative">
-    <Card className="border-2 h-40">
+    <Card className="border-2 h-40 bg-slate-100">
       <CardContent className="flex flex-col">
         <div className="flex flex-row items-center">
           <Avatar src={birthday.thumbnail} alt={birthday.name} className="flex-row"/>

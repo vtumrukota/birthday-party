@@ -37,18 +37,17 @@ export const BirthdayList = (): JSX.Element => {
   }
 
   return (
-    <div className="flex w-[70%] p-2 border-2 m-5 rounded items-center justify-center bg-slate-200 overflow-y-auto">
+    <div className="flex flex-col h-screen w-screen items-center justify-center p-5 overflow-y-auto">
       {isLoading ? <Loader content="Loading Birthdays..." /> : (
         <>
           {birthdays.length > 0 ? (
             // use virtualized grid to render the list of birthday cards since this API is not paginated
             // NOTE: we are assuming the list is never more than a thousand items (<= 600 max)
-            <div className="grid grid-cols-3 items-center gap-4 pl-2 pr-2">
+            <div className="grid grid-cols-3 h-full items-center gap-4 pl-2 pr-2">
               {birthdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
             </div>
           ) : (
-            // This will appear if the filter returns no results
-            // Technically, if the page doesnt have birthdays this will appear as well but that should never occur
+            // If no birthdays exist, check if we've fetched data before showing this message
             <h1 className="text-3xl">Sorry, no Birthdays matched 😔</h1>
           )}
         </>

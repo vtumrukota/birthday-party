@@ -7,18 +7,14 @@ import { BirthdaysContext } from "@/app/contexts/BirthdaysContext";
 import { DateSelector } from "../utilities/dateSelector/DateSelector";
 import { BirthdayError } from "../utilities/errors/BirthdayError";
 
-export const BirthdaySidebar = (): JSX.Element => {
+export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
+  hasFetched: boolean,
+  setHasFetched: React.Dispatch<React.SetStateAction<boolean>>
+}): JSX.Element => {
   const { setBirthdays, setIsLoading } = useContext(BirthdaysContext);
-  const hasLoaded = useRef<boolean>(false);
   const { day, month } = useContext(DateSelectorContext);
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false);
   const { data, isLoading, error } = useOnThisDay(day, month, OnThisDayTypes.Birthday, triggerFetch);
-
-  const fetchBirthdays = () => {
-    if (!hasLoaded.current) hasLoaded.current = true;
-    setTriggerFetch(true);
-    setIsLoading(true);
-  }
 
   // create birthday classes and sorted by descending birth year
   useEffect(() => {
@@ -33,23 +29,26 @@ export const BirthdaySidebar = (): JSX.Element => {
     setIsLoading(false); // help ensure data shows up before loader disappears
   }, [data, setBirthdays, setIsLoading]);
 
+  const fetchBirthdays = () => {
+    if (!hasFetched) setHasFetched(true);
+    setTriggerFetch(true);
+    setIsLoading(true);
+  }
 
   if (error) return <BirthdayError />
 
   return (
-    <article className="flex flex-col h-screen w-[300px] items-center justify-center bg-slate-200">
-      <h1 className="text-3xl p-2 font-bold">🎈Birthday Party🎈</h1>
-      <h5 className="m-5 italic text-md">
-        Learn about notable current and historical figures who share a birthday
-      </h5>
+    <section className="flex flex-col h-screen min-w-[320px] items-center justify-center bg-slate-200">
+      <h1 className="text-3xl font-bold">🎈 Birthday Party 🎈</h1>
+      <h5 className="m-5 italic text-sm">Who elses shares your Birthday?</h5>
       <Button
         disabled={isLoading}
-        className="!mt-5 !bg-red-600 hover:!bg-lime-950"
+        className="!bg-red-600 hover:!bg-lime-950"
         variant="contained"
         onClick={fetchBirthdays}>
         {`See Birthdays on ${month}/${day}`}
       </Button>
-      {hasLoaded.current && <DateSelector isDisabled={isLoading} />}
-    </article>
+      {hasFetched && <DateSelector isDisabled={isLoading} />}
+    </section>
   )
 }

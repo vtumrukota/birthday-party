@@ -1,14 +1,14 @@
 import { createContext } from "react";
 import { Birthday } from "../models/Birthday";
 
-type BirthdayContextType = {
+type BirthdayCtx= {
   birthdays: Birthday[],
-  setBirthdays: (birthdays: Birthday[]) => void,
+  setBirthdays: React.Dispatch<React.SetStateAction<Birthday[]>>,
   isLoading: boolean,
-  setIsLoading: (isLoading: boolean) => void,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-export const BirthdaysContext = createContext<BirthdayContextType>({
+export const BirthdaysContext = createContext<BirthdayCtx>({
   birthdays: [],
   setBirthdays: () => {},
   isLoading: false,
