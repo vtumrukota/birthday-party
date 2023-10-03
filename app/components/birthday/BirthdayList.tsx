@@ -68,7 +68,7 @@ export const BirthdayList = (): JSX.Element => {
           <div className="flex flex-row justify-end items-center w-full mb-4 mt-4">
             <TextField
               aria-label="Search Birthdays"
-              className="w-[180px] bg-white mr-4"
+              className="w-[220px] bg-white mr-4"
               label={resultsLabel}
               variant="outlined"
               value={searchTerm}

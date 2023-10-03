@@ -23,7 +23,7 @@ export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
   return (
     <section className="flex flex-col h-screen min-w-[260px] items-center justify-center bg-gradient-to-b from-blue-100 to-blue-300 text-slate-800">
       <h1 className="text-2xl font-bold">🎈 Birthday Party 🎈</h1>
-      <h5 className="m-5 text-sm">Who elses shares your Birthday?</h5>
+      <h5 className="m-5 text-sm">Who else shares your Birthday?</h5>
       {error ? <BirthdayError /> : (
         <>
           {!hasFetched && <Button
