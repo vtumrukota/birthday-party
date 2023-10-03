@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import debounce from "lodash-es/debounce"
+import debounce from "lodash/debounce"
 import { Pagination, TextField } from "@mui/material"
 import { filterBirthdays } from "@/app/helpers/filterBirthdays"
 import { useOnThisDay } from "@/app/hooks/useOnThisDay"

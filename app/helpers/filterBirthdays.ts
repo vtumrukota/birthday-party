@@ -1,4 +1,4 @@
-import includes from "lodash-es/includes";
+import includes from "lodash/includes";
 import { Birthday } from "../models/Birthday";
 
 export const filterBirthdays = (term: string, bdayList: Birthday[]) => {

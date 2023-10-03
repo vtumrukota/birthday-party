@@ -1,33 +1,34 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { BirthdayView } from './BirthdayView'; // Adjust the import path as needed
+import '@testing-library/jest-dom'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { BirthdayView } from './BirthdayView';
 
-test('renders BirthdayWelcome when hasFetched is false', () => {
-  render(<BirthdayView />);
+describe('BirthdayView Component', () => {
+  it('renders <BirthdayWelcome /> when hasFetched is false', () => {
+    render(<BirthdayView />);
 
-  // Ensure that the BirthdayWelcome component is rendered initially
-  const birthdayWelcomeElement = screen.getByText('Welcome to the BirthdayView');
-  expect(birthdayWelcomeElement).toBeInTheDocument();
+    // ensure view has rendered w/ welcome text
+    expect(screen.getByText('Welcome to Birthday Party!')).toBeInTheDocument();
+    expect(screen.getByText('Please select a month and day to start the fun!')).toBeInTheDocument();
 
-  // Ensure that the BirthdayList component is not rendered initially
-  const birthdayListElement = screen.queryByText('Birthday List Content');
-  expect(birthdayListElement).not.toBeInTheDocument();
-});
+    // ensure that the BirthdayList is not rendered
+    expect(screen.queryByLabelText('Search Birthdays')).not.toBeInTheDocument();
+  });
 
-test('renders BirthdayList when hasFetched is true', () => {
-  render(<BirthdayView />);
+  it('renders <BirthdayList /> when hasFetched is true', () => {
+    render(<BirthdayView />);
+    
+    // ensure view has rendered w/ sidebar
+    expect(screen.getByText('Welcome to Birthday Party!')).toBeInTheDocument();
 
-  // Click a button or trigger an event that sets hasFetched to true
-  // For example, you can simulate a button click
-  const fetchButton = screen.getByText('Fetch Data');
-  userEvent.click(fetchButton);
+    // click on intial trigger to fetch birthdays
+    fireEvent.click(screen.getByLabelText('See Birthdays'));
 
-  // Ensure that the BirthdayList component is rendered after setting hasFetched to true
-  const birthdayListElement = screen.getByText('Birthday List Content');
-  expect(birthdayListElement).toBeInTheDocument();
-
-  // Ensure that the BirthdayWelcome component is no longer rendered
-  const birthdayWelcomeElement = screen.queryByText('Welcome to the BirthdayView');
-  expect(birthdayWelcomeElement).not.toBeInTheDocument();
+    waitFor(() => {
+      // Ensure that the BirthdayList component is rendered after setting hasFetched to true
+      expect(screen.queryByLabelText('Search Birthdays')).toBeInTheDocument();
+  
+      // Ensure that the BirthdayWelcome component is no longer rendered
+      expect(screen.queryByText('Welcome to Birthday Party!')).not.toBeInTheDocument();
+    })
+  });
 });
