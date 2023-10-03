@@ -4,9 +4,9 @@ import includes from "lodash-es/includes"
 import { Pagination } from "@mui/material"
 import { Birthday } from "../../models/Birthday"
 import { BIRTHDAY_PAGE_SIZE, DEBOUNCE_DEFAULT } from "../globals.constants"
-import { Loader } from "../utilities/loader/Loader"
 import { BirthdaysContext } from "@/app/contexts/BirthdaysContext"
 import { BirthdayRow } from "./BirthdayRow"
+import { BirthdayLoader } from "./BirthdayLoader"
 
 export const BirthdayList = (): JSX.Element => {
   const { birthdays, isLoading } = useContext(BirthdaysContext);
@@ -61,8 +61,7 @@ export const BirthdayList = (): JSX.Element => {
 
   return (
     <div className="flex flex-col h-screen w-screen items-center justify-center p-2">
-      {/* Show loading state */}
-      {isLoading ? <Loader content="Loading Birthdays..." /> : (
+      {isLoading ? <BirthdayLoader />: (
         <div className="flex flex-col h-full">
           <div className="flex flex-row justify-end items-center w-full mb-4">
             {/* TODO add sort */}

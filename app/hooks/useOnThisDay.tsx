@@ -21,7 +21,7 @@ const wikiFetcher = async (url: string) => {
   });
 
   if (!resp.ok) {
-    const error = new Error('An error occurred while fetching the data.');
+    const error = new Error('An error occurred while fetching Birthdays.');
     error.message = await resp.json();
     throw error;
   }

@@ -10,7 +10,7 @@ export enum OnThisDayTypes {
   Deaths = 'deaths',
   Holidays = 'holidays',
   Events = 'events',
-}
+};
 
 // Data interface from the OnThisDay API
 interface OnThisDayPage {
@@ -30,10 +30,10 @@ interface OnThisDayPage {
   type: string,
   // TODO: Add more properties as needed
   [key: string]: any,
-}
+};
 
 export interface OnThisDayResponse {
   year: number,
   text: string,
   pages: OnThisDayPage[],
-}
+};
