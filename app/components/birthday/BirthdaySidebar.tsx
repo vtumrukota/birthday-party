@@ -1,12 +1,11 @@
 'use client'
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
-import {  useOnThisDay } from "@/app/hooks/useOnThisDay";
-import { DateSelectorContext } from "@/app/contexts/DateSelectorContext";
+import { useOnThisDay } from "@/app/hooks/useOnThisDay";
+import { useDateSelector } from "@/app/contexts/DateSelectorContext";
 import { DateSelector } from "../utilities/dateSelector/DateSelector";
 import { BirthdayError } from "../utilities/errors/BirthdayError";
-import { useDateSelector } from "@/app/hooks/useDateSelector";
 
 export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
   hasFetched: boolean,

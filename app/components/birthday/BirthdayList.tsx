@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import debounce from "lodash-es/debounce"
 import { Pagination, TextField } from "@mui/material"
 import { filterBirthdays } from "@/app/helpers/filterBirthdays"
@@ -9,8 +9,7 @@ import { BIRTHDAY_PAGE_SIZE, DEBOUNCE_DEFAULT } from "../globals.constants"
 import { Birthday } from "../../models/Birthday"
 import { BirthdayRow } from "./BirthdayRow"
 import { BirthdayLoader } from "./BirthdayLoader"
-import { DateSelectorContext } from "@/app/contexts/DateSelectorContext"
-import { useDateSelector } from "@/app/hooks/useDateSelector"
+import { useDateSelector } from "@/app/contexts/DateSelectorContext"
 
 export const BirthdayList = (): JSX.Element => {
   const { day, month } = useDateSelector();
@@ -25,11 +24,9 @@ export const BirthdayList = (): JSX.Element => {
   // create birthday classes and sorted by descending birth year
   useEffect(() => {
     if (!data) return;
-    console.log('data', data)
     const sortedBdays = data.births
       .map((birthday: any) => new Birthday(birthday))
       .sort((a: Birthday, b: Birthday) => b.birthYear - a.birthYear);
-    console.log('sorted', sortedBdays);
     originalList.current = sortedBdays;
     updatePage(1);
     setPageCount(Math.floor(sortedBdays.length / BIRTHDAY_PAGE_SIZE) || 1);

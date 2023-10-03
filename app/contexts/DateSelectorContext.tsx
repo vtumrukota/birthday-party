@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { getCurrentDate } from "../helpers/dateHelper";
 
 type DateSelectorCtx = {
@@ -38,4 +38,9 @@ export const DateSelectorProvider = ({ children }: { children: JSX.Element }): J
       {children}
     </DateSelectorContext.Provider>
   )
+}
+
+export const useDateSelector = () => {
+  const { day, month, setDay, setMonth } = useContext(DateSelectorContext);
+  return { day, month, setDay, setMonth };
 }
