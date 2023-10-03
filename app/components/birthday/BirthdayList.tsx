@@ -1,35 +1,48 @@
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+'use client'
+
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import debounce from "lodash-es/debounce"
-import includes from "lodash-es/includes"
-import { Button, Pagination, TextField } from "@mui/material"
-import { Birthday } from "../../models/Birthday"
+import { Pagination, TextField } from "@mui/material"
+import { filterBirthdays } from "@/app/helpers/filterBirthdays"
+import { useOnThisDay } from "@/app/hooks/useOnThisDay"
 import { BIRTHDAY_PAGE_SIZE, DEBOUNCE_DEFAULT } from "../globals.constants"
-import { BirthdaysContext } from "@/app/contexts/BirthdaysContext"
+import { Birthday } from "../../models/Birthday"
 import { BirthdayRow } from "./BirthdayRow"
 import { BirthdayLoader } from "./BirthdayLoader"
-import { filterBirthdays } from "@/app/helpers/filterBirthdays"
+import { DateSelectorContext } from "@/app/contexts/DateSelectorContext"
 
 export const BirthdayList = (): JSX.Element => {
-  const { birthdays, isLoading } = useContext(BirthdaysContext);
-  const originalList = useRef<Birthday[]>(birthdays); // used by search to filter results
-  const [displayedBdays, setDisplayedBdays] = useState<Birthday[]>(birthdays);
+  const { day, month } = useContext(DateSelectorContext);
+  const { data, isLoading } = useOnThisDay({ day, month });
+  const [displayedBdays, setDisplayedBdays] = useState<Birthday[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const originalList = useRef<Birthday[]>([]); // used by search to filter results
   const totalCount = originalList.current.length;
-  const pageCount = Math.floor(totalCount / BIRTHDAY_PAGE_SIZE);
-  const resultsLabel = `Showing ${searchTerm ? displayedBdays.length : totalCount} / ${totalCount} Results`;
+  const [pageCount, setPageCount] = useState<number>(Math.floor(totalCount / BIRTHDAY_PAGE_SIZE));
+  const resultsLabel = `${searchTerm ? displayedBdays.length : totalCount} / ${totalCount} Birthdays`;
 
+  // create birthday classes and sorted by descending birth year
   useEffect(() => {
-    originalList.current = birthdays;
+    if (!data) return;
+    console.log('data', data)
+    const sortedBdays = data.births
+      .map((birthday: any) => new Birthday(birthday))
+      .sort((a: Birthday, b: Birthday) => b.birthYear - a.birthYear);
+    console.log('sorted', sortedBdays);
+    originalList.current = sortedBdays;
     updatePage(1);
-  }, [birthdays]);
+    setPageCount(Math.floor(sortedBdays.length / BIRTHDAY_PAGE_SIZE) || 1);
+  }, [data]);
 
   const handleSearch = (term: string) => {
     if (term === '') {
       updatePage(1);
-      return;
-    };
-    const filtered = filterBirthdays(term, originalList.current);
-    setDisplayedBdays(filtered);
+      setPageCount(Math.floor(originalList.current.length / BIRTHDAY_PAGE_SIZE) || 1);
+    } else {
+      const filtered = filterBirthdays(term, originalList.current);
+      setDisplayedBdays(filtered);
+      setPageCount(Math.floor(filtered.length / BIRTHDAY_PAGE_SIZE) || 1);
+    }
   };
 
   // Ensure the search is debounced to avoid filtering too quickly on each keystroke
@@ -74,7 +87,7 @@ export const BirthdayList = (): JSX.Element => {
             <div className="grid grid-cols-3 gap-6 pl-4 pr-4 pb-4 md:grid-col-2 2xl:grid-cols-4 items-center overflow-y-auto">
               {displayedBdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
             </div>
-          ) : <h1 className="text-xl mt-12 p-4 bg-slate-200 rounded">Sorry, no Birthdays matched 😔</h1>}
+          ) : <h1 className="text-xl mt-12 p-4 bg-slate-200 rounded-md">Sorry, no Birthdays matched 😔</h1>}
         </div>
       )}
     </div>

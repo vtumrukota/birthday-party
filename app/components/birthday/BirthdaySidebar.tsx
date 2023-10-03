@@ -1,58 +1,43 @@
-import { useContext, useEffect, useRef, useState } from "react";
+'use client'
+
+import { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import {  useOnThisDay } from "@/app/hooks/useOnThisDay";
 import { DateSelectorContext } from "@/app/contexts/DateSelectorContext";
-import { Birthday } from "@/app/models/Birthday";
-import { BirthdaysContext } from "@/app/contexts/BirthdaysContext";
 import { DateSelector } from "../utilities/dateSelector/DateSelector";
 import { BirthdayError } from "../utilities/errors/BirthdayError";
-import { OnThisDayTypes } from '../../hooks/hooks.definitions';
 
 export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
   hasFetched: boolean,
   setHasFetched: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element => {
-  const { setBirthdays, setIsLoading } = useContext(BirthdaysContext);
   const { day, month } = useContext(DateSelectorContext);
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false);
-  const { data, isLoading, error } = useOnThisDay(day, month, OnThisDayTypes.Birthday, triggerFetch);
-
-  // create birthday classes and sorted by descending birth year
-  useEffect(() => {
-    if (!data) return;
-    console.log('data', data)
-    const sortedBdays = data.births
-      .map((birthday: any) => new Birthday(birthday))
-      .sort((a: Birthday, b: Birthday) => b.birthYear - a.birthYear);
-    console.log('sorted', sortedBdays);
-    setBirthdays(sortedBdays);
-    setTriggerFetch(false); // reset fetch state
-    setIsLoading(false); // help ensure data shows up before loader disappears
-  }, [data, setBirthdays, setIsLoading]);
+  const { isLoading, error } = useOnThisDay({ day, month, triggerFetch });
 
   const fetchBirthdays = () => {
     if (!hasFetched) setHasFetched(true);
     setTriggerFetch(true);
-    setIsLoading(true);
   }
 
   return (
-    <section className="flex flex-col h-screen min-w-[260px] items-center justify-center bg-zinc-600 text-white">
+    <section className="flex flex-col h-screen min-w-[260px] items-center justify-center bg-gradient-to-b from-blue-100 to-blue-300 text-slate-800">
       <h1 className="text-2xl font-bold">🎈 Birthday Party 🎈</h1>
-      <h5 className="m-5 italic text-sm">Who elses shares your Birthday?</h5>
+      <h5 className="m-5 text-sm">Who elses shares your Birthday?</h5>
       {error ? <BirthdayError /> : (
         <>
-          <Button
+          {!hasFetched && <Button
             aria-label="See Birthdays"
             disabled={isLoading}
-            className="!bg-red-600 hover:!bg-slate-900"
+            className="!bg-slate-400 hover:!bg-slate-00"
             variant="contained"
             onClick={fetchBirthdays}>
-            {`See Birthdays on ${month}/${day}`}
-          </Button>
+            {`See Today's Birthdays`}
+          </Button>}
           {hasFetched && <DateSelector isDisabled={isLoading} />}
         </>
       )}
+      <h4 className="text-xl mt-4">Current Date: {month}/{day}</h4>
     </section>
   )
 }

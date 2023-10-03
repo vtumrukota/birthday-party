@@ -1,5 +1,5 @@
 import useSWR, { SWRResponse } from 'swr' // https://swr.vercel.app/docs/api
-import { OnThisDayTypes } from './hooks.definitions';
+import { OnThisDayLanguages, OnThisDayTypes } from './hooks.definitions';
 
 /**
   Securely grab the auth token from the environment variable in Vercel
@@ -30,7 +30,7 @@ const wikiFetcher = async (url: string) => {
 }
 
 // We will only support english users for v1, hence the /en path
-const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia/en';
+const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia';
 
 /**
  * This hook fetches notable events or persons that were born or died on a given date.
@@ -45,13 +45,21 @@ const WIKI_API = 'https://api.wikimedia.org/feed/v1/wikipedia/en';
  */
 
 // TODO: Add guards for Date/Month range strings
-export const useOnThisDay = (
+export const useOnThisDay = ({
+  day,
+  month,
+  triggerFetch = true,
+  type = OnThisDayTypes.Birthday,
+  language = OnThisDayLanguages.English,
+}: {
   day: string,
   month: string,
-  type: OnThisDayTypes = OnThisDayTypes.Birthday,
-  triggerFetch: boolean = true,
-  ): SWRResponse => {
-    const { data,  error, mutate, isLoading, isValidating } = useSWR(triggerFetch ? `${WIKI_API}/onthisday/${type}/${month}/${day}` : null, wikiFetcher)
+  triggerFetch?: boolean,
+  type?: OnThisDayTypes,
+  language?: string,
+}): SWRResponse => {
+    const { data,  error, mutate, isLoading, isValidating } =
+      useSWR(triggerFetch ? `${WIKI_API}/${language}/onthisday/${type}/${month}/${day}` : null, wikiFetcher)
 
     return {
       data,

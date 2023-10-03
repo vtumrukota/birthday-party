@@ -12,6 +12,18 @@ export enum OnThisDayTypes {
   Events = 'events',
 };
 
+export enum OnThisDayLanguages {
+  English = 'en',
+  German = 'de',
+  French = 'fr',
+  Swedish = 'sv',
+  Portuguese = 'pt',
+  Russian = 'ru',
+  Spanish = 'es',
+  Arabic = 'ar',
+  Bosnian = 'bs',
+}
+
 // Data interface from the OnThisDay API
 interface OnThisDayPage {
   description?: string,

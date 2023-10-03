@@ -9,12 +9,12 @@ export const BirthdayLoader = (): JSX.Element => {
     <div className="flex flex-col items-center justify-center">
       <div className="flex flex-col">
         <Image
+          priority
           className="rounded-lg"
           src={path}
           alt={alt}
           height={200}
           width={200}
-          loading="lazy"
         />
       </div>
       <div className="flex flex-col mt-4">

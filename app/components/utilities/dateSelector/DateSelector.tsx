@@ -1,7 +1,10 @@
+'use client'
+
 import React, { useContext } from "react"
 import dayjs from 'dayjs';
-import { DatePicker } from "@mui/x-date-pickers"
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { DateSelectorContext } from "@/app/contexts/DateSelectorContext"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 enum DateViews {
   Day = 'day',
@@ -9,6 +12,15 @@ enum DateViews {
   Year = 'year'
 }
 
+/**
+ * Material UI datepicker - used to allow users to change birthday day & month
+ * 
+ * We currently block year behavior, but the user can navigate backwards through months
+ * to access leap year if needed.
+ * 
+ * @param isDisabled: <boolean> - whether the datepicker should be disabled
+ * @returns <JSX.Element> - the datepicker component
+ */
 export const DateSelector = ({ isDisabled }: {isDisabled?: boolean }): JSX.Element => {
   const { setDay, setMonth } = useContext(DateSelectorContext);
 
@@ -22,15 +34,17 @@ export const DateSelector = ({ isDisabled }: {isDisabled?: boolean }): JSX.Eleme
   };
 
   return (
-    <div className="flex flex-row items-center justify-center mt-4 p-2 bg-white rounded">
-      <DatePicker
-        className="w-[200px]"
-        label="Change Birthday"
-        disabled={isDisabled}
-        openTo={DateViews.Month}
-        views={[DateViews.Month, DateViews.Day]}
-        onAccept={setNewDate}
-      />
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+      <div className="flex flex-row items-center justify-center mt-4 p-2 rounded">
+        <DatePicker
+          className="w-[200px]"
+          label={isDisabled ? 'Loading...' : 'Select a Date'}
+          disabled={isDisabled}
+          openTo={DateViews.Day}
+          views={[DateViews.Day, DateViews.Month]}
+          onAccept={setNewDate}
+        />
+      </div>
+    </LocalizationProvider>
   )
 };

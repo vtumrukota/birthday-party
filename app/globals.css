@@ -15,3 +15,17 @@ body {
 .MuiTooltip-tooltipArrow {
   font-size: 15px;
 }
+
+/* Datepicker overrides */
+/* .MuiPickersMonth-monthButton.Mui-selected,
+.MuiPickersDay-root.Mui-selected {
+  background-color: rgb(239 68 68) !important;
+  outline: none;
+}
+.MuiPickersMonth-monthButton.Mui-selected:hover,
+.MuiPickersDay-root.Mui-selected:hover {
+  background-color: rgb(239 68 68) !important;
+  outline: none;
+} */
+
+

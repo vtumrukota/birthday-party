@@ -1,8 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Epilogue, Arimo } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const epilogue = Epilogue({ subsets: ['latin'] })
+const arimo = Arimo({ subsets: ['latin'], display: 'swap' })
 
 export const metadata: Metadata = {
   title: 'Birthday Party!',
@@ -15,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" >
+      <body className={arimo.className}>{children}</body>
     </html>
   )
 }
