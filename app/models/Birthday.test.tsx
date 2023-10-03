@@ -1,18 +1,19 @@
 import { Birthday } from './Birthday'; // Adjust the import path as needed
+import { OnThisDayResponse } from '../hooks/hooks.definitions';
 
 // Mock data for testing
 const mockData = {
   year: 1990,
-  text: 'John Doe, (d. 2020)',
+  text: 'Larry Legend, a legend in all aspects (d. 2020)',
   pages: [
     {
-      description: 'A description of John Doe (d. 2020)',
+      description: 'A description of Larry Legend (d. 2020)',
       normalizedtitle: 'John_Doe',
-      extract: 'Some additional details about John Doe.',
-      thumbnail: { source: 'thumbnail.jpg' },
-      originalimage: { source: 'image.jpg' },
+      extract: 'Some additional details about Larry Legend.',
+      thumbnail: { source: 'thumbnail.jpg', width: 100, height: 100 },
+      originalimage: { source: 'image.jpg', width: 200, height: 200 },
+      type: 'person',
     },
-    // ... other page data if needed
   ],
 };
 
@@ -23,18 +24,18 @@ describe('Birthday class', () => {
     expect(birthday.birthYear).toBe(1990);
     expect(birthday.name).toBe('John_Doe');
     expect(birthday.deathYear).toBe('2020');
-    expect(birthday.description).toBe('A description of John Doe');
-    expect(birthday.additionalDetails).toBe('Some additional details about John Doe.');
+    expect(birthday.description).toBe('A description of Larry Legend ');
+    expect(birthday.additionalDetails).toBe('Some additional details about Larry Legend.');
     expect(birthday.thumbnail).toBe('thumbnail.jpg');
     expect(birthday.image).toBe('image.jpg');
   });
 
   it('should handle missing description property in the input data', () => {
-    const dataWithNoDescription = { ...mockData };
-    dataWithNoDescription.pages[0].description = undefined;
+    const dataWithNoDescription: OnThisDayResponse = { ...mockData };
+    dataWithNoDescription.pages[0].description = undefined ;
     const birthday = new Birthday(dataWithNoDescription);
 
-    expect(birthday.description).toBe('John Doe');
+    expect(birthday.description).toBe('Larry Legend');
   });
 
   it('should handle missing death year in the input text', () => {
@@ -49,6 +50,6 @@ describe('Birthday class', () => {
     const dataWithDeathYear = { ...mockData };
     const birthday = new Birthday(dataWithDeathYear);
 
-    expect(birthday.description).toBe('A description of John Doe');
+    expect(birthday.description).toBe('A description of Larry Legend');
   });
 });
