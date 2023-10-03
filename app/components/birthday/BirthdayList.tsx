@@ -82,7 +82,7 @@ export const BirthdayList = (): JSX.Element => {
           </div>
           {/* Show cards or let user know their search had no matches (data will always return some people) */}
           {displayedBdays.length > 0 ? (
-            <div className="grid grid-cols-3 gap-6 pl-4 pr-4 pb-4 md:grid-col-2 2xl:grid-cols-4 items-center overflow-y-auto">
+            <div className="grid grid-cols-3 gap-6 w-full pl-4 pr-4 pb-4 md:grid-col-2 2xl:grid-cols-4 items-center overflow-y-auto">
               {displayedBdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
             </div>
           ) : <h1 className="text-xl mt-12 p-4 bg-slate-200 rounded-md">Sorry, no Birthdays matched 😔</h1>}
