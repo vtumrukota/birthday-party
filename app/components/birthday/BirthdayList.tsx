@@ -19,7 +19,7 @@ export const BirthdayList = (): JSX.Element => {
   const originalList = useRef<Birthday[]>([]); // used by search to filter results
   const totalCount = originalList.current.length;
   const [pageCount, setPageCount] = useState<number>(Math.floor(totalCount / BIRTHDAY_PAGE_SIZE));
-  const resultsLabel = `Showing ${searchTerm ? displayedBdays.length : totalCount} of ${totalCount}`;
+  const resultsLabel = ` ${searchTerm ? displayedBdays.length : totalCount} of ${totalCount}`;
 
   // create birthday classes and sorted by descending birth year
   useEffect(() => {
@@ -66,6 +66,11 @@ export const BirthdayList = (): JSX.Element => {
       {isLoading ? <BirthdayLoader />: (
         <div className="flex flex-col h-full w-full items-center">
           <div className="flex flex-row justify-end items-center w-full mb-4 mt-4">
+            <Pagination
+              className="mr-2"
+              count={pageCount}
+              onChange={handlePage}
+            />
             <TextField
               aria-label="Search Birthdays"
               className="w-[220px] bg-white mr-4"
@@ -73,11 +78,6 @@ export const BirthdayList = (): JSX.Element => {
               variant="outlined"
               value={searchTerm}
               onChange={searchResults}
-            />
-            <Pagination
-              className="mr-2"
-              count={pageCount}
-              onChange={handlePage}
             />
           </div>
           {/* Show cards or let user know their search had no matches (data will always return some people) */}
