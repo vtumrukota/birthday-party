@@ -6,12 +6,13 @@ import {  useOnThisDay } from "@/app/hooks/useOnThisDay";
 import { DateSelectorContext } from "@/app/contexts/DateSelectorContext";
 import { DateSelector } from "../utilities/dateSelector/DateSelector";
 import { BirthdayError } from "../utilities/errors/BirthdayError";
+import { useDateSelector } from "@/app/hooks/useDateSelector";
 
 export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
   hasFetched: boolean,
   setHasFetched: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element => {
-  const { day, month } = useContext(DateSelectorContext);
+  const { day, month } = useDateSelector();
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false);
   const { isLoading, error } = useOnThisDay({ day, month, triggerFetch });
 
