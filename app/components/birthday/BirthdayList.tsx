@@ -19,7 +19,7 @@ export const BirthdayList = (): JSX.Element => {
   const originalList = useRef<Birthday[]>([]); // used by search to filter results
   const totalCount = originalList.current.length;
   const [pageCount, setPageCount] = useState<number>(Math.floor(totalCount / BIRTHDAY_PAGE_SIZE));
-  const resultsLabel = `${searchTerm ? displayedBdays.length : totalCount} / ${totalCount} Birthdays`;
+  const resultsLabel = `Showing ${searchTerm ? displayedBdays.length : totalCount} of ${totalCount}`;
 
   // create birthday classes and sorted by descending birth year
   useEffect(() => {
@@ -75,7 +75,7 @@ export const BirthdayList = (): JSX.Element => {
             />
             <TextField
               aria-label="Search Birthdays"
-              className="w-[300px] bg-white mr-4"
+              className="w-[180px] bg-white mr-4"
               label={resultsLabel}
               variant="outlined"
               value={searchTerm}
