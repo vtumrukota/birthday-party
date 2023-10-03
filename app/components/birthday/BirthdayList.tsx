@@ -19,7 +19,7 @@ export const BirthdayList = (): JSX.Element => {
   const originalList = useRef<Birthday[]>([]); // used by search to filter results
   const totalCount = originalList.current.length;
   const [pageCount, setPageCount] = useState<number>(Math.floor(totalCount / BIRTHDAY_PAGE_SIZE));
-  const resultsLabel = ` ${searchTerm ? displayedBdays.length : totalCount} of ${totalCount}`;
+  const resultsLabel = `Showing ${searchTerm ? displayedBdays.length : totalCount} of ${totalCount}`;
 
   // create birthday classes and sorted by descending birth year
   useEffect(() => {
@@ -62,10 +62,10 @@ export const BirthdayList = (): JSX.Element => {
   const handlePage = (_e: React.ChangeEvent<unknown> , page: number) => updatePage(page);
 
   return (
-    <div className="flex flex-col h-screen w-screen min-w-[650px] items-center justify-center p-2">
+    <div className="flex flex-col h-screen w-screen min-w-[650px] items-center justify-center">
       {isLoading ? <BirthdayLoader />: (
         <div className="flex flex-col h-full w-full items-center">
-          <div className="flex flex-row justify-end items-center w-full mb-4 mt-4">
+          <div className="flex flex-row justify-end items-center w-full pb-4 pt-4 border-b-2 border-slate-200">
             <Pagination
               className="mr-2"
               count={pageCount}
@@ -82,7 +82,7 @@ export const BirthdayList = (): JSX.Element => {
           </div>
           {/* Show cards or let user know their search had no matches (data will always return some people) */}
           {displayedBdays.length > 0 ? (
-            <div className="grid grid-cols-3 gap-6 w-full pl-4 pr-4 pb-4 md:grid-col-2 2xl:grid-cols-4 items-center overflow-y-auto">
+            <div className="grid gap-6 w-full p-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 items-center overflow-y-auto">
               {displayedBdays.map((b) => <BirthdayRow key={`${b.name}-${b.description}`} birthday={b} />)}
             </div>
           ) : <h1 className="text-xl mt-12 p-4 bg-slate-200 rounded-md">Sorry, no Birthdays matched 😔</h1>}
