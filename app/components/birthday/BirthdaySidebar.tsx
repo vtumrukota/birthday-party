@@ -29,7 +29,7 @@ export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
           {!hasFetched && <Button
             aria-label="See Birthdays"
             disabled={isLoading}
-            className="!bg-slate-400 hover:!bg-slate-00"
+            className="!bg-slate-600 hover:!bg-slate-400"
             variant="contained"
             onClick={fetchBirthdays}>
             {`See Today's Birthdays`}
@@ -37,7 +37,7 @@ export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
           {hasFetched && <DateSelector isDisabled={isLoading} />}
         </>
       )}
-      <h4 className="text-xl mt-4">Current Date: {month}/{day}</h4>
+      <h4 className="text-md mt-4">Current Date: {month}/{day}</h4>
     </section>
   )
 }

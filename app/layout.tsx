@@ -1,9 +1,8 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Epilogue, Arimo } from 'next/font/google'
+import { Heebo } from 'next/font/google'
 
-const epilogue = Epilogue({ subsets: ['latin'] })
-const arimo = Arimo({ subsets: ['latin'], display: 'swap' })
+const heebo = Heebo({ subsets: ['latin'], display: 'swap', variable: '--font-heebo' })
 
 export const metadata: Metadata = {
   title: 'Birthday Party!',
@@ -16,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" >
-      <body className={arimo.className}>{children}</body>
+    <html lang="en" className={`${heebo.variable} font-sans`}>
+      <body >{children}</body>
     </html>
   )
 }
