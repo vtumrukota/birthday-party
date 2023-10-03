@@ -5,11 +5,11 @@ export const BirthdayWelcome = (): JSX.Element =>
     <h1 className="text-4xl font-bold">Welcome to Birthday Party!</h1>
     <p className="text-lg pt-4 mb-4">Please select a month and day to start the fun!</p>
     <Image
+      priority
       className="rounded-lg"
       src="/images/dog-cake.png"
       alt="dog-cake"
       height={300}
       width={300}
-      loading="lazy"
     />
   </section>

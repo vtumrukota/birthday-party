@@ -42,8 +42,8 @@ export const Modal = ({ open, title, content, closeText = 'Close', closeAction, 
         <DialogContentText id={`alert-dialog-content-${title}`}>{content}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{closeText}</Button>
-        {acceptText && <Button onClick={handleClose}>{acceptText}</Button>}
+        <Button aria-label="Close Modal" onClick={handleClose}>{closeText}</Button>
+        {acceptText && <Button aria-label={acceptText} onClick={handleClose}>{acceptText}</Button>}
       </DialogActions>
     </Dialog>
   )

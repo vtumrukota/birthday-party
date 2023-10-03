@@ -24,6 +24,7 @@ export const DateSelector = ({ isDisabled }: {isDisabled?: boolean }): JSX.Eleme
   return (
     <div className="flex flex-row items-center justify-center mt-4 p-2 bg-white rounded">
       <DatePicker
+        className="w-[200px]"
         label="Change Birthday"
         disabled={isDisabled}
         openTo={DateViews.Month}
