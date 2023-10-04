@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { useOnThisDay } from "@/app/hooks/useOnThisDay";
 import { useDateSelector } from "@/app/contexts/DateSelectorContext";
 import { DateSelector } from "../utilities/dateSelector/DateSelector";
-import { BirthdayError } from "../utilities/errors/BirthdayError";
+import { BirthdayError } from "./BirthdayError";
 
 export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
   hasFetched: boolean,
@@ -29,7 +29,7 @@ export const BirthdaySidebar = ({ hasFetched, setHasFetched } : {
           {!hasFetched && <Button
             aria-label="See Birthdays"
             disabled={isLoading}
-            className="!bg-slate-600 hover:!bg-slate-400"
+            className="!bg-slate-600 hover:!bg-slate-400 !mt-4"
             variant="contained"
             onClick={fetchBirthdays}>
             {`See Today's Birthdays`}

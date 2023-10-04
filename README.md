@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Birthday Party!
 
+"Birthday Party!" is a fun app that can show you famous and notable people throughout history who were born on this day.
+
+The app allows you to immediately search today's date alongside some exciting features:
+
+- Use the datepicker to select any calendar date by day/month & automatically gather the new birthdays
+- Hover over any card to quickly learn more about that person
+- Click on any card takes you to their Wikipedia page in a new tab
+- Easily paginate through all the results returned
+- Filter down results via the search box: you can scan results by name, year or description
+
+Hope you enjoy and learn something new about some notable people!
+
+See the app live at [Birthday Party App](https://birthday-partys.vercel.app/)
+
+# Development
 ## Getting Started
 
-First, run the development server:
+Here are some helpful commands:
+
+### Running the application locally
+
+- run the local development server or run the unit test suite
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
+
+pnpm run test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technology
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This application was built in [TypeScript](https://www.typescriptlang.org/) with modern frontend web technologies
 
-## Learn More
+### Core App:
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js](https://nextjs.org/docs)
+- [React.js](https://react.dev/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Core Libraries
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [SWR](https://swr.vercel.app/)
+- [MaterialUI](https://mui.com/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [React-Testing-Library](https://testing-library.com/docs/react-testing-library/intro)
+- [Jest](https://jestjs.io/)
 
-## Deploy on Vercel
+## Future Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Add Virtualization to the birthday list to make it even faster
+- Ability to mark & filter by favorite birthdays
+- Support for Mobile browsers
+- Multi-Language support
+- (a11y) Accessibility for Screen Readers

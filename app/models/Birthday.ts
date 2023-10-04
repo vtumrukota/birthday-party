@@ -14,6 +14,7 @@ export class Birthday {
   name: string;
   deathYear: string | null; // if the string contains '(d. <Year>)' we will extract it
   description: string;
+  externalLink: string;
   additionalDetails: string
   thumbnail: string;
   image: string;
@@ -36,6 +37,7 @@ export class Birthday {
       this.description = person.join(' ');
     }
     this.description = stripDeathYear(this.description).trim();
+    this.externalLink = info.content_urls?.desktop?.page;
     this.name = info.normalizedtitle;
     this.additionalDetails = info.extract;
     this.thumbnail = info.thumbnail?.source;

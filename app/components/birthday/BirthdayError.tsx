@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { Modal } from "../modal/Modal";
+import { Modal } from "../utilities/modal/Modal";
 
 export const BirthdayError = (): JSX.Element =>
   <Modal

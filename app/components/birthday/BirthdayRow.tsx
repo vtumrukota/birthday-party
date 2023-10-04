@@ -3,15 +3,18 @@ import CardContent from "@mui/material/CardContent"
 import { Avatar } from "@mui/material"
 import { Birthday } from "../../models/Birthday"
 
-export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element => {
-  console.log('birthday', birthday);
-
-  return (
-    <div className="group relative">
-      <Card className="border-2 h-40 bg-slate-100 rounded-xl">
+export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element =>
+  <div className="group relative">
+    <Card className="border-2 h-40 bg-slate-100 rounded-xl cursor-pointer">
+      <a href={birthday.externalLink || birthday.image} target="_blank" rel="noopener noreferrer">
         <CardContent className="flex flex-col">
           <div className="flex flex-row items-center">
-            <Avatar src={birthday.thumbnail} alt={birthday.name} className="flex-row"/>
+            <Avatar
+              className="flex-row"
+              src={birthday.thumbnail} alt={birthday.name}
+              variant="rounded"
+              imgProps={{ loading: 'lazy' }}
+            />
             <h3 className="text-xl ml-2 font-semibold line-clamp-2">{birthday.name}</h3>
           </div>
           <p className="text-md pt-2 line-clamp-2">{birthday.description}</p>
@@ -26,7 +29,6 @@ export const BirthdayRow = ({ birthday }: { birthday: Birthday }): JSX.Element =
             {birthday.additionalDetails}
           </CardContent>
         </Card>
-      </Card>
-    </div>
-  )
-};
+      </a>
+    </Card>
+  </div>
