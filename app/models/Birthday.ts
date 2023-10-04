@@ -14,7 +14,7 @@ export class Birthday {
   name: string;
   deathYear: string | null; // if the string contains '(d. <Year>)' we will extract it
   description: string;
-  externalLink: string;
+  externalLink?: string;
   additionalDetails: string
   thumbnail: string;
   image: string;
