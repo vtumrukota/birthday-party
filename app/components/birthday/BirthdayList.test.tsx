@@ -138,6 +138,7 @@ describe('BirthdayList', () => {
       expect(screen.getByText('Vivek Tumrukota')).toBeInTheDocument();
     })
 
+    // ensure that no results message shows properly
     fireEvent.change(searchBox, { target: { value: 'Not anyone here' } });
     expect(screen.getByText(/Sorry, no Birthdays matched/)).toBeInTheDocument();
   })
