@@ -51,6 +51,7 @@ This application was built in [TypeScript](https://www.typescriptlang.org/) with
 ## Future Features
 
 - Add Virtualization to the birthday list to make it even faster
+- Add error reporting & analytics services to monitor the app
 - Ability to mark & filter by favorite birthdays
 - Support for Mobile browsers
 - Multi-Language support
