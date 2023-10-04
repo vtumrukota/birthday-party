@@ -4,7 +4,7 @@
 
 The app allows you to immediately search today's date alongside some exciting features:
 
-- Use the datepicker to select any calendar date by day/month & automatically gather the new birthdays
+- Use the datepicker to select any calendar date by day/month & automatically gather the new birthdays sorted in reverse chronological order
 - Hover over any card to quickly learn more about that person
 - Click on any card takes you to their Wikipedia page in a new tab
 - Easily paginate through all the results returned
