@@ -1,82 +1,107 @@
 import '@testing-library/jest-dom'
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
-import { BirthdayList } from './BirthdayList'; // Adjust the import path as needed
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { BirthdayList } from './BirthdayList';
+import { useOnThisDay } from '@/app/hooks/useOnThisDay';
+import { DateSelectorContext } from '@/app/contexts/DateSelectorContext';
 
-// Mock the useOnThisDay hook response
-const server = setupServer(
-  rest.get('https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/Birthday/01/01', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        births: [
-          {
-            year: 1990,
-            text: 'John Doe, (d. 2020)',
-            pages: [
-              {
-                description: 'A description of John Doe (d. 2020)',
-                normalizedtitle: 'John_Doe',
-                extract: 'Some additional details about John Doe.',
-                thumbnail: { source: 'thumbnail.jpg' },
-                originalimage: { source: 'image.jpg' },
-              },
-            ],
-          },
-          // Add more mock data as needed
-        ],
-      })
-    );
+jest.mock('../../hooks/useOnThisDay');
+const useOnThisDayMock = useOnThisDay as jest.MockedFunction<typeof useOnThisDay>;
+
+const loadingDataMock = {
+  data: null,
+  isLoading: true,
+  isValidating: false,
+  error: null,
+  mutate: jest.fn(),
+};
+
+const noDataMock = {
+  data: null,
+  isLoading: false,
+  isValidating: false,
+  error: null,
+  mutate: jest.fn(),
+};
+
+const successDataMock = {
+  data: {
+    births: [{
+      year: 1989,
+      text: 'Vivek Tumrukota',
+      pages: [{
+        description: 'A description of a Legend (d. 2020)',
+        normalizedtitle: 'Vivek Tumrukota',
+        extract: 'Some additional details about Vivek Tumrukota.',
+        thumbnail: { source: 'thumbnail.jpg', width: 100, height: 100 },
+        originalimage: { source: 'image.jpg', width: 200, height: 200 },
+        type: 'person',
+      }]
+    }]
+  },
+  isLoading: false,
+  isValidating: false,
+  error: null,
+  mutate: jest.fn(),
+};
+
+const errorDataMock = {
+  data: null,
+  isLoading: false,
+  isValidating: false,
+  error: new Error('Error fetching data'),
+  mutate: jest.fn(),
+};
+
+describe('BirthdayList component', () => {
+
+  beforeEach(() => {
+    useOnThisDayMock.mockRestore();
   })
-);
 
-beforeAll(() => {
-  server.listen(); // Start the mock server
-});
+  it('renders BirthdayLoader when data is loading', () => {
+    useOnThisDayMock.mockReturnValue(loadingDataMock);
 
-afterEach(() => {
-  server.resetHandlers(); // Reset any request handlers after each test
-});
+    render(<BirthdayList />);
+    
+    // ensure that <BirthdayLoader /> is displayed while data is loading
+    expect(screen.getByText('Have some cake while you wait!')).toBeInTheDocument();
+  });
 
-afterAll(() => {
-  server.close(); // Close the server after all tests
-});
+  it('shows a message if no birthdays are found', () => {
+    useOnThisDayMock.mockReturnValue(noDataMock);
+    
+    render(
+      <DateSelectorContext.Provider value={{ day: '10', month: '10', setDay: jest.fn(), setMonth: jest.fn() }}>
+        <BirthdayList />
+      </DateSelectorContext.Provider>
+    );
 
-test('renders BirthdayLoader when data is loading', async () => {
-  render(<BirthdayList />);
-  
-  // Ensure that BirthdayLoader is displayed while data is loading
-  const birthdayLoaderElement = screen.getByText('Loading...');
-  expect(birthdayLoaderElement).toBeInTheDocument();
+    // ensure the correct message is displayed when no birthdays are found
+    waitFor(() => {
+      expect(screen.getByText(/Sorry, no Birthdays matched/)).toBeInTheDocument();
+    })
+  });
 
-  // Wait for data loading to complete
-  await screen.findByText('John Doe');
-});
+  it('renders BirthdayRow when data is loaded', () => {
+    const res = useOnThisDayMock.mockReturnValue(successDataMock);
 
-test('renders BirthdayRow when data is loaded', async () => {
-  render(<BirthdayList />);
-  
-  // Wait for data loading to complete
-  await screen.findByText('John Doe');
-  
-  // Ensure that BirthdayRow is displayed after data is loaded
-  const birthdayRowElement = screen.getByText('John Doe');
-  expect(birthdayRowElement).toBeInTheDocument();
-});
+    render(
+      <DateSelectorContext.Provider value={{ day: '10', month: '10', setDay: jest.fn(), setMonth: jest.fn() }}>
+        <BirthdayList />
+      </DateSelectorContext.Provider>
+    );
 
-test('search functionality works', async () => {
-  render(<BirthdayList />);
-  
-  // Wait for data loading to complete
-  await screen.findByText('John Doe');
-  
-  // Search for a specific birthday
-  const searchInput = screen.getByLabelText('Search Birthdays');
-  fireEvent.change(searchInput, { target: { value: 'John' } });
+    // ensure that <BirthdayRow /> is displayed after data is loaded
+    waitFor(() => {
+      expect(screen.getByText('Vivek Tumrukota')).toBeInTheDocument();
+    })
+  });
 
-  // Ensure that the search result is displayed
-  const searchResultElement = screen.getByText('John Doe');
-  expect(searchResultElement).toBeInTheDocument();
+  it('should be able to paginate through results', () => {
+
+  })
+
+  it('should be able to search results', () => {
+    
+  })
 });

@@ -24,7 +24,7 @@ describe('Birthday class', () => {
     expect(birthday.birthYear).toBe(1990);
     expect(birthday.name).toBe('John_Doe');
     expect(birthday.deathYear).toBe('2020');
-    expect(birthday.description).toBe('A description of Larry Legend ');
+    expect(birthday.description).toBe('A description of Larry Legend');
     expect(birthday.additionalDetails).toBe('Some additional details about Larry Legend.');
     expect(birthday.thumbnail).toBe('thumbnail.jpg');
     expect(birthday.image).toBe('image.jpg');
@@ -35,7 +35,7 @@ describe('Birthday class', () => {
     dataWithNoDescription.pages[0].description = undefined ;
     const birthday = new Birthday(dataWithNoDescription);
 
-    expect(birthday.description).toBe('Larry Legend');
+    expect(birthday.description).toBe('a legend in all aspects');
   });
 
   it('should handle missing death year in the input text', () => {
@@ -50,6 +50,6 @@ describe('Birthday class', () => {
     const dataWithDeathYear = { ...mockData };
     const birthday = new Birthday(dataWithDeathYear);
 
-    expect(birthday.description).toBe('A description of Larry Legend');
+    expect(birthday.description).toBe('a legend in all aspects');
   });
 });

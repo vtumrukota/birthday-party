@@ -13,7 +13,7 @@ import { useDateSelector } from "@/app/contexts/DateSelectorContext"
 
 export const BirthdayList = (): JSX.Element => {
   const { day, month } = useDateSelector();
-  const { data, isLoading } = useOnThisDay({ day, month });
+  const { data, isLoading, error } = useOnThisDay({ day, month });
   const [displayedBdays, setDisplayedBdays] = useState<Birthday[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const originalList = useRef<Birthday[]>([]); // used by search to filter results
@@ -60,6 +60,9 @@ export const BirthdayList = (): JSX.Element => {
   }
   
   const handlePage = (_e: React.ChangeEvent<unknown> , page: number) => updatePage(page);
+
+  // let the <BirthdaySidebar /> takeover if there's an error
+  if (error) return <></>
 
   return (
     <div className="flex flex-col h-screen w-screen min-w-[650px] items-center justify-center">

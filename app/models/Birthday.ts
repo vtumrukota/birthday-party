@@ -35,7 +35,7 @@ export class Birthday {
       delete person[0];
       this.description = person.join(' ');
     }
-    this.description = stripDeathYear(this.description);
+    this.description = stripDeathYear(this.description).trim();
     this.name = info.normalizedtitle;
     this.additionalDetails = info.extract;
     this.thumbnail = info.thumbnail?.source;
