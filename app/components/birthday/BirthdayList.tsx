@@ -29,6 +29,7 @@ export const BirthdayList = (): JSX.Element => {
       .sort((a: Birthday, b: Birthday) => b.birthYear - a.birthYear);
     originalList.current = sortedBdays;
     updatePage(1);
+    setSearchTerm('');
     setPageCount(Math.floor(sortedBdays.length / BIRTHDAY_PAGE_SIZE) || 1);
   }, [data]);
 
