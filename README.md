@@ -13,11 +13,11 @@ The app allows you to immediately search today's date alongside some exciting fe
 Hope you enjoy and learn something new about some notable people!
 
 See the app live at [Birthday Party App](https://birthday-partys.vercel.app/)
+- Note: The app is only responsive on Desktop as of today
 
-# Development
 ## Getting Started
 
-Here are some helpful commands:
+If you want to explore the app locally, here are some helpful commands:
 
 ### Running the application locally
 
@@ -43,9 +43,9 @@ This application was built in [TypeScript](https://www.typescriptlang.org/) with
 ### Core Libraries
 
 - [SWR](https://swr.vercel.app/)
-- [MaterialUI](https://mui.com/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [React-Testing-Library](https://testing-library.com/docs/react-testing-library/intro)
+- [Material UI](https://mui.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
 - [Jest](https://jestjs.io/)
 
 ## Future Features
