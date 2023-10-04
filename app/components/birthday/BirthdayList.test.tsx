@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BirthdayList } from './BirthdayList';
 import { useOnThisDay } from '@/app/hooks/useOnThisDay';
 import { DateSelectorContext } from '@/app/contexts/DateSelectorContext';
@@ -14,7 +14,6 @@ const loadingDataMock = {
   error: null,
   mutate: jest.fn(),
 };
-
 const noDataMock = {
   data: null,
   isLoading: false,
@@ -22,7 +21,13 @@ const noDataMock = {
   error: null,
   mutate: jest.fn(),
 };
-
+const errorDataMock = {
+  data: null,
+  isLoading: false,
+  isValidating: false,
+  error: new Error('Error fetching data'),
+  mutate: jest.fn(),
+};
 const successDataMock = {
   data: {
     births: [{
@@ -44,15 +49,7 @@ const successDataMock = {
   mutate: jest.fn(),
 };
 
-const errorDataMock = {
-  data: null,
-  isLoading: false,
-  isValidating: false,
-  error: new Error('Error fetching data'),
-  mutate: jest.fn(),
-};
-
-describe('BirthdayList component', () => {
+describe('BirthdayList', () => {
 
   beforeEach(() => {
     useOnThisDayMock.mockRestore();
@@ -82,8 +79,17 @@ describe('BirthdayList component', () => {
     })
   });
 
+  it('doesnt render content when data is errored', () => {
+    useOnThisDayMock.mockReturnValue(errorDataMock);
+
+    render(<BirthdayList />);
+
+    // ensure that <BirthdayLoader /> is displayed while data is loading
+    expect(screen.queryByText('Have some cake while you wait!')).not.toBeInTheDocument();
+  });
+
   it('renders BirthdayRow when data is loaded', () => {
-    const res = useOnThisDayMock.mockReturnValue(successDataMock);
+    useOnThisDayMock.mockReturnValue(successDataMock);
 
     render(
       <DateSelectorContext.Provider value={{ day: '10', month: '10', setDay: jest.fn(), setMonth: jest.fn() }}>
@@ -97,11 +103,42 @@ describe('BirthdayList component', () => {
     })
   });
 
-  it('should be able to paginate through results', () => {
+  it('should be able to see paginate handler', () => {
+    useOnThisDayMock.mockReturnValue(successDataMock);
 
+    render(
+      <DateSelectorContext.Provider value={{ day: '10', month: '10', setDay: jest.fn(), setMonth: jest.fn() }}>
+        <BirthdayList />
+      </DateSelectorContext.Provider>
+    );
+
+    // ensure the pagination buttons are displayed
+    expect(screen.getByLabelText('pagination navigation')).toBeInTheDocument();
+    // TODO: add more items to mockData to allow full pagination test
   })
 
   it('should be able to search results', () => {
-    
+    useOnThisDayMock.mockReturnValue(successDataMock);
+
+    render(
+      <DateSelectorContext.Provider value={{ day: '10', month: '10', setDay: jest.fn(), setMonth: jest.fn() }}>
+        <BirthdayList />
+      </DateSelectorContext.Provider>
+    );
+
+    // ensure the search box is displayed
+    const searchBox = screen.getByLabelText('Search Birthdays').querySelector('input') as HTMLInputElement;
+    expect(searchBox).toBeInTheDocument();
+
+    // ensure that the search box is debounced
+    fireEvent.change(searchBox, { target: { value: 'Vivek' } });
+    expect(searchBox).toHaveValue('Vivek');
+
+    waitFor(() => {
+      expect(screen.getByText('Vivek Tumrukota')).toBeInTheDocument();
+    })
+
+    fireEvent.change(searchBox, { target: { value: 'Not anyone here' } });
+    expect(screen.getByText(/Sorry, no Birthdays matched/)).toBeInTheDocument();
   })
 });
