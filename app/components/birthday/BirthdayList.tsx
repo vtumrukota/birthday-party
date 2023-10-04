@@ -71,13 +71,13 @@ export const BirthdayList = (): JSX.Element => {
         <div className="flex flex-col h-full w-full items-center">
           <div className="flex flex-row justify-end items-center w-full pb-4 pt-4 border-b-2 border-slate-200">
             <Pagination
-              className="mr-2"
+              className="!mr-2"
               count={pageCount}
               onChange={handlePage}
             />
             <TextField
               aria-label="Search Birthdays"
-              className="w-[220px] bg-white mr-4"
+              className="w-[220px] !mr-4"
               label={resultsLabel}
               variant="outlined"
               value={searchTerm}
